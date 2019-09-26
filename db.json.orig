@@ -1,0 +1,15 @@
+{
+    "todos":
+    [
+        {
+            "id": 1,
+            "title": "feed the cat",
+            "completed": true
+        },
+        {
+            "id": 2,
+            "title": "buy milk",
+            "completed": false
+        }
+    ]
+}

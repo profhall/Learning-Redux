@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Provider } from 'react-redux'
-import store from "./redux/store";
+import configureStore from "./redux/store";
 import AddTodo from './components/AddTodo';
 import VisibleTodoList from './components/VisibleTodoList';
 import Footer from './components/Footer';
@@ -9,7 +9,7 @@ import './App.css'
 
 function App() {
     return (
-        <Provider store={store}>
+        <Provider store={configureStore()}>
             <div className="App">
                 <Container>
                     <h1>Welcome to the TODO App</h1>
