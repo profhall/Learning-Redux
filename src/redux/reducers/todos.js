@@ -18,7 +18,7 @@ const initialState = []
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        //this is the method I'll use for keyts
+        //this is the method I'll use for keys
         case FETCH_TODOS: {
             return action.todos;
         }
@@ -39,18 +39,13 @@ export default function(state = initialState, action) {
                 : todo)
         }
         case ADD_TODO:{
-            let max_id = Math.max(...state.map(todo => todo.id));
             //state.push doesn't work in this case because ...
-            const newTodo ={
-                id: max_id+=1,
-                title: action.payload.todo,
-                completed: false
-            };
-            API.post('/', newTodo);
-            return state.concat(newTodo)
+
+            return state.concat(action.payload)
         }
         case DEL_TODO:{
-            API.delete(`/${action.payload.id}`)
+            //This is a problem, because this is a side effect and the reducer should be a pure function
+            //API.delete(`/${action.payload.id}`)
             return state.filter(todo => todo.id !== action.payload.id)
         }
         default:

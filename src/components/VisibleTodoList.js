@@ -30,7 +30,7 @@ const mapStateToProps = state => ({
 //     };
 // };
 
-/*Shorthand when the names ofthe actions and functions match*/
+/*Shorthand when the names of the actions and functions match*/
 const mapDispatchToProps = {toggleTodo, delTodo};
 
 const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);

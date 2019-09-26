@@ -8,11 +8,18 @@ export const API = axios.create({
 /*
 Actions are functions that just return action objects!!
 Action creators
+
+Axio Calls should always go in actions to avoid side effects
  */
 
 
 
 
+/*Toggling Todos*/
+// export const toggleTodoSuccess = id => ({
+//     type: TOGGLE_TODO,
+//     payload: { id }
+// });
 
 export const toggleTodo = id => ({
     type: TOGGLE_TODO,
@@ -25,14 +32,43 @@ export const setFilter = filter => ({
 });
 
 
-export const addTodo = todo => ({
+/*Adding Todos*/
+export const addTodoSuccess = todo => ({
     type: ADD_TODO,
-    payload: { todo }
+    payload: todo
 });
 
-export const delTodo = id => ({
+export const addTodo = todo => (async dispatch => {
+    try {
+        // API.post('/', todo);
+        const response = await API.get();
+        let max_id = Math.max(...response.data.map(todo => todo.id));
+        const newTodo ={
+            id: max_id+=1,
+            title: todo,
+            completed: false
+        };
+
+        API.post('/', newTodo);
+        dispatch(addTodoSuccess(newTodo));
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+/*Deleting Todos*/
+export const delTodoSuccess = id => ({
     type: DEL_TODO,
     payload: { id }
+});
+
+export const delTodo = id => (async dispatch => {
+    try {
+        API.delete(`/${id}`)
+        dispatch(delTodoSuccess(id));
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 /*When using async a wait two actions are need but only one is used from the outside
@@ -40,11 +76,14 @@ export const delTodo = id => ({
 * fetchTodosSuccess is used inside fetchTodos
 *
 *  */
+//Normal action creator, only normal action creators edit the state not async
 const fetchTodosSuccess = todos => ({
     type: FETCH_TODOS,
     todos
     //OR todos: todos
 });
+
+//Async action creator
 export const fetchTodos = () => (
     async dispatch => {
         try {
@@ -58,7 +97,8 @@ export const fetchTodos = () => (
             // {type:FETCH_TODOS, todos: todos }
             // I need to return an object from the function that dispatch is calling
             dispatch(fetchTodosSuccess(response.data));
-            return response;
+
+            // return response; //really don't need this, but it allows a caller function to know when it's done, good for using
         } catch (error) {
             console.error(error);
         }
