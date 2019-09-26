@@ -40,7 +40,6 @@ export default function(state = initialState, action) {
         }
         case ADD_TODO:{
             //state.push doesn't work in this case because ...
-
             return state.concat(action.payload)
         }
         case DEL_TODO:{

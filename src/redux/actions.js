@@ -21,9 +21,24 @@ Axio Calls should always go in actions to avoid side effects
 //     payload: { id }
 // });
 
-export const toggleTodo = id => ({
+export const toggleTodoSuccess = id => ({
     type: TOGGLE_TODO,
     payload: { id }
+});
+
+export const toggleTodo = todo => (async dispatch =>{
+    try {
+        // getState() is the method I've been searching for!!
+        const { todos } = getState()
+        const todoToToggle = todos.find(todo => todo.id === id)
+        await API.put(`/${id}`, { ...todoToToggle, completed: !todoToToggle.completed })
+        console.log(todo)
+        // API.put(`/${id}`, {..., });
+        dispatch(toggleTodoSuccess(todo));
+    } catch (error) {
+        console.error(error);
+    }
+
 });
 
 export const setFilter = filter => ({
